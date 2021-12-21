@@ -21,6 +21,7 @@ function App() {
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState(null);
   const [choiceTwo, setChoiceTwo] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
   const shuffleCards = () => {
     // Creates objects with filepath for generated image numbers
@@ -30,6 +31,8 @@ function App() {
       .sort(() => 0.5 - Math.random()) // Randomly sort the array
       .map((card, i) => ({ ...card, id: i })); // Assign an id to each card
 
+    setChoiceOne(null);
+    setChoiceTwo(null);
     setCards(shuffledCards);
     setTurns(0);
   };
@@ -40,6 +43,7 @@ function App() {
 
   useEffect(() => {
     if (choiceOne && choiceTwo) {
+      setDisabled(true);
       if (choiceOne.src === choiceTwo.src) {
         setCards((prevCards) => {
           return prevCards.map((card) => {
@@ -61,7 +65,12 @@ function App() {
     setChoiceOne(null);
     setChoiceTwo(null);
     setTurns((prevTurns) => prevTurns + 1);
+    setDisabled(false);
   };
+
+  useEffect(() => {
+    shuffleCards();
+  }, []);
 
   return (
     <div className="App">
@@ -74,9 +83,11 @@ function App() {
             key={card.id}
             handleChoice={handleChoice}
             flipped={card === choiceOne || card === choiceTwo || card.matched}
+            disabled={disabled}
           />
         ))}
       </div>
+      <p>Turns: {turns}</p>
     </div>
   );
 }
