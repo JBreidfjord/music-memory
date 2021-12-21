@@ -1,5 +1,6 @@
 import "./App.css";
 
+import SingleCard from "./components/SingleCard";
 import { useState } from "react";
 
 const genNums = () => {
@@ -36,12 +37,7 @@ function App() {
       <button onClick={shuffleCards}>New Game</button>
       <div className="card-grid">
         {cards.map((card) => (
-          <div className="card" key={card.id}>
-            <div>
-              <img className="card-front" src={card.src} alt="card-front" />
-              <img className="card-back" src="/img/cover.png" alt="card-back" />
-            </div>
-          </div>
+          <SingleCard card={card} key={card.id} />
         ))}
       </div>
     </div>
